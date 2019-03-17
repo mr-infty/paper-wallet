@@ -4,7 +4,7 @@ WALLET_DIR = wallets/
 SRC_DIR = src/
 
 PUBLIC_KEYS = $(wildcard $(addsuffix *.asc, $(PUBLIC_KEY_DIR)))
-OBJ = $(patsubst $(PUBLIC_KEY_DIR)%.asc, $(WALLET_DIR)%.ps, $(PUBLIC_KEYS))
+OBJ = $(patsubst $(PUBLIC_KEY_DIR)%.asc, $(WALLET_DIR)%.pdf, $(PUBLIC_KEYS))
 
 .PHONY: all clean
 
@@ -28,3 +28,5 @@ $(WALLET_DIR)%.ps: $(WALLET_DIR)%.eps
 	rm -f $(SRC_DIR)_pkey.txt
 	rm -f $(SRC_DIR)_qr-code.eps
 
+%.pdf: %.ps
+	gs -dNOPAUSE -dBATCH -sOutputFile=$@ -dAutoRotatePages=/None -sDEVICE=pdfwrite $<
