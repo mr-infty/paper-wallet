@@ -1,0 +1,292 @@
+%!PS-Adobe-3.0
+/mm {72 mul 25.4 div} def
+%%Pages: 2
+%%PageOrder: Ascend
+%%BoundingBox: 0 0 210 mm 297 mm
+%%DocumentPaperSizes: a4
+%%EndComments
+
+%%BeginPrologue
+%%BeginResource: helper 0 0
+% label x y fold
+/fold {
+   gsave
+      .75 mm setlinewidth
+      translate % center coordinates
+
+      % arrow shaft
+      newpath
+      0 0 2.5 mm 270 450 arc
+      stroke
+
+      % arrow head
+      newpath
+      -2 mm  2.5 mm   moveto
+      0 mm     4 mm   lineto
+      0 mm     1 mm   lineto
+      closepath
+      fill
+
+      % label
+      newpath
+      5 mm 1 mm moveto
+      /Helvetica-Bold findfont 12 scalefont setfont
+      show
+   grestore
+} def
+
+% label x1 y1 x2 y2 foldline
+/foldlinedict 5 dict def
+/foldline {
+foldlinedict begin
+   /y2 exch def
+   /x2 exch def
+   /y1 exch def
+   /x1 exch def
+   /label exch def
+
+   % Dashed line indicating fold
+   gsave
+      [ 1 mm .5 mm ] 1.25 mm setdash
+      newpath
+      x1 y1 moveto
+      x2 y2 lineto
+      stroke
+   grestore
+   
+   % Arrow and label
+   gsave
+      x1 x2 add 2 div
+      y1 y2 add 2 div
+      translate
+      y2 y1 sub
+      x2 x1 sub
+      atan rotate
+      label 0 0 fold
+   grestore
+end
+} def
+
+% text x y centeredtext
+/centeredtext {
+   newpath
+   moveto
+   dup stringwidth
+   2 div neg
+   exch 2 div neg exch
+   rmoveto
+   show
+} def
+
+% x y r circle
+/circle {
+   gsave
+      newpath
+      0 360 arc
+      stroke
+   grestore
+} def
+
+% angle x y siegel
+/siegel {
+   gsave
+      translate
+      rotate
+      newpath
+      0 0 7.5 mm 180 360 arc
+      stroke
+
+      /Helvetica findfont 9 scalefont setfont
+      (seal) 0 -3 mm centeredtext
+      %0 0 7.5 mm circle
+   grestore
+} def
+
+% width height rect
+/rectdict 2 dict def
+/rect {
+rectdict begin
+   /height exch def
+   /width exch def
+   gsave
+      newpath
+      0 0 moveto
+      width 0 lineto
+      width height lineto
+      0 height lineto
+      closepath
+      stroke
+   grestore
+end
+} def
+
+% x1 x2 min
+/min { 2 copy gt { exch } if pop } bind def
+
+% str n splitstring
+/splitstringdict 2 dict def
+/splitstring {
+   splitstringdict begin
+      /n exch def
+      /str exch def
+      [
+      0 n str length 1 sub {
+         dup str length exch sub n min
+         str 3 1 roll
+         getinterval
+      } for
+      ]
+   end
+} def
+%%EndResource
+%%EndPrologue
+
+%%BeginSetup
+%%BeginFeature: *Duplex True
+<< /Duplex true >> setpagedevice
+%%EndFeature
+%%EndSetup
+
+% Draw first page (interior of the wallet)
+%%Page: 1 1
+
+% First fold line
+(1. fold) 0 mm 99 mm 210 mm 99 mm foldline
+
+% Second fold line
+(2. fold) 0 mm 198 mm 210 mm 198 mm foldline
+
+% Area on which to glue aluminium foil (slightly larger than private area!)
+gsave
+   2 {
+      newpath
+      5 mm    292 mm   moveto
+      205 mm   292 mm   lineto
+      205 mm   203 mm   lineto
+      5 mm    203 mm   lineto
+      closepath
+      
+      % Light gray diagonal dashed lines
+      gsave
+         clip
+         .8 setgray
+         [ 10 mm 2 mm ] 0 setdash
+         30 {
+            10 mm 0 translate
+            newpath
+            -100 mm 198 mm moveto
+            0 mm 298 mm lineto
+            stroke
+         } repeat
+      grestore
+      
+      % Draw border of area
+      stroke
+      
+      % Instructions
+      gsave
+         /Helvetica-Bold findfont 24 scalefont setfont
+      
+         105 mm 247.5 mm translate
+         (Glue) 0 mm 5 mm centeredtext
+         (Aluminium foil) 0 mm -5 mm centeredtext
+      grestore
+      0 mm -99 mm translate
+   } repeat
+grestore
+
+% Area on which to write down the confidential data
+gsave
+   newpath
+   10 mm    10 mm   moveto
+   200 mm   10 mm   lineto
+   200 mm   89 mm   lineto
+   10 mm    89 mm   lineto
+   closepath
+   stroke
+grestore
+
+% Boxes for the 5x5 = 25 seed words for Monero
+gsave
+10 mm 10 mm translate
+
+0 1 4 {
+   0 1 4 {
+      gsave
+         .8 setgray
+         newpath
+         38 mm mul 5 mm add
+         exch dup 3 1 roll
+         15.8 mm mul 4 mm add
+         translate
+         28 mm 7.8 mm rect
+      grestore
+   } for
+   pop
+} for
+grestore
+
+showpage
+
+% Draw second page (exterior of the wallet)
+%%Page: 2 2
+
+% Draw lower half of arrow for second fold
+(2. fold) 210 mm 0 mm 0 mm 0 mm foldline
+
+% Third fold line
+(3. fold) 140 mm 99 mm 140 mm 198 mm foldline
+
+% Fourth fold line
+(4. fold) 70 mm 99 mm 70 mm 198 mm foldline
+
+% Draw lower half of arrow for fourth fold
+(4. fold) 210 mm 297 mm 210 mm 198 mm foldline
+
+% Half circles indicating seals
+% Seal 1
+%0  35 mm    297 mm   siegel
+0  105 mm   297 mm   siegel
+
+% Seal 2
+%90  0 mm     247.5 mm   siegel
+-90  140 mm   247.5 mm   siegel
+
+% Seal 3
+%180  35 mm    198 mm   siegel
+180  105 mm   198 mm   siegel
+
+% Insert QR Code and text
+gsave
+   105 mm 247.5 mm translate
+   -90 rotate
+
+   % QR Code
+   .75 .75 scale % rescale qr code
+   128 2 div neg dup translate % qr code needs to have bounding box 128 128
+   currentdict begin % save copy of current dict and start new one
+   /showpage {} def % redefine showpage to prevent eps file from calling it
+   (src/_qr-code.eps) run
+   end % restored saved dict
+
+   % Text
+   /Helvetica-Bold findfont 10 scalefont setfont
+
+
+   (src/_pkey.txt) (r) file
+   1024 string readstring pop
+   %(monero:478SpNPPjqsGM6eHhCbRcv3zKeJmtmSQV6PV1gLqts2hJ5FrANDdoK3tZ9VsABxf8k9abxqRwRzKjc73gEBX33NneCXSy3MJ)
+   -10 mm 0 translate
+   gsave
+   32 splitstring {
+      0 -5 mm translate
+      newpath
+      0 0 moveto
+      show
+   } forall
+   grestore
+grestore
+
+showpage
+
+%%EOF
