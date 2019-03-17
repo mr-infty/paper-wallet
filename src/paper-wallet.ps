@@ -150,6 +150,12 @@ end
 % Draw first page (interior of the wallet)
 %%Page: 1 1
 
+% Draw border around entire page in order to facilitate cutting,
+% if the document gets rescaled during print
+gsave
+   210 mm 297 mm rect
+grestore
+
 % First fold line
 (1. fold) 0 mm 99 mm 210 mm 99 mm foldline
 
@@ -158,7 +164,8 @@ end
 
 % Area on which to glue aluminium foil (slightly larger than private area!)
 gsave
-   2 {
+      0 mm -99 mm translate
+   %2 {
       newpath
       5 mm    292 mm   moveto
       205 mm   292 mm   lineto
@@ -192,7 +199,7 @@ gsave
          (Aluminium foil) 0 mm -5 mm centeredtext
       grestore
       0 mm -99 mm translate
-   } repeat
+   %} repeat
 grestore
 
 % Area on which to write down the confidential data
