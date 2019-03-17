@@ -26,8 +26,8 @@ on Debian/Ubuntu.
 
 ## Installation
 
-    git clone https://github.com/mr-infty/monero-paper-wallet.git
-    cd monero-paper-wallet
+    git clone https://github.com/mr-infty/paper-wallet.git
+    cd paper-wallet
 
 ## Usage
 
