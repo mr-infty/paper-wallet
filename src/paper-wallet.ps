@@ -153,6 +153,7 @@ end
 % Draw border around entire page in order to facilitate cutting,
 % if the document gets rescaled during print
 gsave
+   1 mm setlinewidth
    210 mm 297 mm rect
 grestore
 
@@ -237,6 +238,14 @@ showpage
 
 % Draw second page (exterior of the wallet)
 %%Page: 2 2
+
+% Also draw border around second page, so that you can detect
+% whether both pages printed exactly on top of each other in
+% duplex print.
+gsave
+   1 mm setlinewidth
+   210 mm 297 mm rect
+grestore
 
 % Draw lower half of arrow for second fold
 (2. fold) 210 mm 0 mm 0 mm 0 mm foldline
