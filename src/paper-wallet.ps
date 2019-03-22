@@ -102,6 +102,51 @@ end
    grestore
 } def
 
+% angle x y glue
+/glue {
+   gsave
+      translate
+      rotate
+      newpath
+      -15 mm   0 mm     moveto
+      -15 mm   9 mm    lineto
+      15 mm    9 mm    lineto
+      15 mm    0 mm     lineto
+      stroke
+      /Helvetica findfont 9 scalefont setfont
+      (tape) 0 3 mm centeredtext
+   grestore
+} def
+
+% angle x y sealno
+/sealno {
+   gsave
+      translate
+      rotate
+
+      % label
+      /Helvetica-Bold findfont 9 scalefont setfont
+      newpath
+      -23 mm   6 mm moveto
+      (seal no.) show
+
+      /Helvetica findfont 9 scalefont setfont
+      newpath
+      -18.5 mm -8 mm moveto
+      ((use document-proof ink!)) show
+
+      % field
+      newpath
+      -23 mm   -5 mm  moveto
+      23 mm    -5 mm  lineto
+      23 mm    5 mm   lineto
+      -23 mm   5 mm   lineto
+      closepath
+      stroke
+
+   grestore
+} def
+
 % width height rect
 /rectdict 2 dict def
 /rect {
@@ -150,12 +195,14 @@ end
 % Draw first page (interior of the wallet)
 %%Page: 1 1
 
-% Draw border around entire page in order to facilitate cutting,
-% if the document gets rescaled during print
-gsave
-   1 mm setlinewidth
-   210 mm 297 mm rect
-grestore
+% Only draw border on the back side!
+
+%% Draw border around entire page in order to facilitate cutting,
+%% if the document gets rescaled during print
+%gsave
+%   1 mm setlinewidth
+%   210 mm 297 mm rect
+%grestore
 
 % First fold line
 (1. fold) 0 mm 99 mm 210 mm 99 mm foldline
@@ -259,18 +306,30 @@ grestore
 % Draw lower half of arrow for fourth fold
 (4. fold) 210 mm 297 mm 210 mm 198 mm foldline
 
+% Rectangles indicating where to use tape
+% Tape 1
+180 35 mm  297 mm   glue
+180 105 mm 297 mm   glue
+
+% Tape 2
+0  35 mm    198 mm    glue
+0  105 mm   198 mm    glue
+
 % Half circles indicating seals
-% Seal 1
-%0  35 mm    297 mm   siegel
-0  105 mm   297 mm   siegel
+%% Seal 1
+%%0  35 mm    297 mm   siegel
+%0  105 mm   297 mm   siegel
 
 % Seal 2
-%90  0 mm     247.5 mm   siegel
+90  0 mm     247.5 mm   siegel
 -90  140 mm   247.5 mm   siegel
 
-% Seal 3
-%180  35 mm    198 mm   siegel
-180  105 mm   198 mm   siegel
+%% Seal 3
+%%180  35 mm    198 mm   siegel
+%180  105 mm   198 mm   siegel
+
+% Field for writing down seal no
+90   35 mm    247.5 mm    sealno
 
 % Insert QR Code and text
 gsave
@@ -287,12 +346,9 @@ gsave
 
    % Text
    /Helvetica-Bold findfont 10 scalefont setfont
-
-
    (src/_pkey.txt) (r) file
    1024 string readstring pop
-   %(monero:478SpNPPjqsGM6eHhCbRcv3zKeJmtmSQV6PV1gLqts2hJ5FrANDdoK3tZ9VsABxf8k9abxqRwRzKjc73gEBX33NneCXSy3MJ)
-   -10 mm 0 translate
+   -10 mm -2 mm translate
    gsave
    32 splitstring {
       0 -5 mm translate
@@ -301,6 +357,7 @@ gsave
       show
    } forall
    grestore
+
 grestore
 
 showpage
